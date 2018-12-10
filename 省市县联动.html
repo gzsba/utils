@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>javascript省市县联动示例</title>
+省：<select id="pro">
+    <option value="">请选择省</option>
+    <option value="1">北京</option>
+    <option value="2">上海</option>
+    <option value="3">广西</option>
+</select>
+市：<select id="city">
+    <option value="">请选择市</option>
+</select>
+县：<select id="town">
+    <option value="">请选择市</option>
+</select>
+<script>
+    //市数据结构，为json数组对象。数组小标为省的id，数组项为市json数据。。
+    var arrCity = [];
+    arrCity[1] = [{t: '北京市', id: 1}];
+    arrCity[2] = [{t: '上海市', id: 2}];
+    arrCity[3] = [{t: '南宁市', id: 3}, {t: '桂林市', id: 4}, {t: '柳州市', id: 5}];
+    //如果还有县的联动，同理生成arrTown即可
+    var arrTown = [];
+    arrTown[1] = [{t: '东城区', id: 1}, {t: '海淀区', id: 2}]
+    arrTown[2] = [{t: '黄埔区', id: 4}, {t: '静安区', id: 5}]
+    arrTown[3] = [{t: '青秀区', id: 6}]
+    arrTown[4] = [{t: '七星区', id: 7}, {t: '象山区', id: 8}, {t: '秀峰区', id: 9}]
+    arrTown[5] = [{t: '鱼峰区', id: 10}, {t: '拉堡', id: 11}]
+    document.getElementById('pro').onchange = function () {
+        addOptions(document.getElementById('city'), arrCity[this.value]);
+        document.getElementById('city').onchange();//同时加载城镇
+    }
+    document.getElementById('city').onchange = function () {
+        addOptions(document.getElementById('town'), arrTown[this.value]);
+    }
+    function addOptions(s, arr, initValue) {
+        if (!arr || arr.length == 0) arr = [{t: '请选择市', id: ''}];
+        if (!s) {
+            alert('select对象不存在！');
+            return false
+        }
+        s.options.length = 0;
+        var selectedIndex = 0;
+        for (var i = 0; i < arr.length; i++) {
+            s.options.add(new Option(arr[i].t, arr[i].id));
+            if (arr[i].id == initValue) selectedIndex = i;
+        }
+    }
+</script>
